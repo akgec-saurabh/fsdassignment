@@ -15,7 +15,7 @@ const initialValues = {
   to: "",
 };
 
-function ExperienceEdit({ onClick }) {
+function ExperienceEdit({ onClick, setExperienceDetail, experienceDetail }) {
   return (
     <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-xl bg-white  px-8 py-8 shadow-md  rounded-xl">
       <div className="flex justify-between">
@@ -30,7 +30,7 @@ function ExperienceEdit({ onClick }) {
         />
       </div>
       <Formik
-        initialValues={initialValues}
+        initialValues={experienceDetail || initialValues}
         validationSchema={Yup.object({
           position: Yup.string().required("Required"),
           company: Yup.string().required("Required"),
@@ -41,6 +41,8 @@ function ExperienceEdit({ onClick }) {
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
           console.log(values);
+          setExperienceDetail(values);
+          onClick();
         }}
       >
         <Form>

@@ -10,14 +10,13 @@ const poppins = Poppins({
 
 function Layout({ children }) {
   return (
-    <Register />
-    // <div className={`${poppins.className} flex`}>
-    //   <Sidebar />
-    //   <div className="w-screen min-h-screen">
-    //     <MainHeader />
-    //     <main className="min-h-screen bg-slate-100">{children}</main>
-    //   </div>
-    // </div>
+    <div className={`${poppins.className} flex`}>
+      <Sidebar />
+      <div className="w-screen min-h-screen">
+        <MainHeader />
+        <main className="min-h-screen bg-slate-100">{children}</main>
+      </div>
+    </div>
   );
 }
 

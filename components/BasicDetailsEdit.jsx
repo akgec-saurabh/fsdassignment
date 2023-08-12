@@ -7,15 +7,11 @@ import close from "@/public/close.svg";
 import * as Yup from "yup";
 
 const initialValues = {
-  course: "",
-  company: "",
+  phone: "",
+  skills: "",
 };
 
-function CertificationsEdit({
-  onClick,
-  certificationDetail,
-  setCertificationDetail,
-}) {
+function BasicDetailsEdit({ onClick, basicDetail, setBasicDetail }) {
   return (
     <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-xl bg-white  px-8 py-8 shadow-md rounded-xl">
       <div className="flex justify-between">
@@ -30,21 +26,28 @@ function CertificationsEdit({
         />
       </div>
       <Formik
-        initialValues={certificationDetail || initialValues}
+        initialValues={basicDetail || initialValues}
         validationSchema={Yup.object({
-          course: Yup.string().required("Required"),
-          company: Yup.string().required("Required"),
+          phone: Yup.string()
+            .min(10, "Must be 10 character")
+            .max(10, "Must be 10 character")
+            .required("Required"),
+          skills: Yup.string().required("Required"),
         })}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
           console.log(values);
-          setCertificationDetail(values);
+          setBasicDetail(values);
           onClick();
         }}
       >
         <Form>
-          <Input name="course" label="Course" placeholder="Python" />
-          <Input name="company" label="Company" placeholder="Coding Ninjas" />
+          <Input name="phone" label="Your Phone" placeholder="9415793535" />
+          <Input
+            name="skills"
+            label="Skills"
+            placeholder="Java,Flutter,React"
+          />
           <Button type="submit">Save</Button>
         </Form>
       </Formik>
@@ -52,4 +55,4 @@ function CertificationsEdit({
   );
 }
 
-export default CertificationsEdit;
+export default BasicDetailsEdit;

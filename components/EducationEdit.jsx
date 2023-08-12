@@ -15,7 +15,7 @@ const initialValues = {
   desc: "",
 };
 
-function EducationEdit({ onClick }) {
+function EducationEdit({ onClick, educationDetail, setEducationDetail }) {
   return (
     <div className=" absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-xl bg-white  px-8 py-8 shadow-md rounded-xl">
       <div className="flex justify-between">
@@ -30,7 +30,7 @@ function EducationEdit({ onClick }) {
         />
       </div>
       <Formik
-        initialValues={initialValues}
+        initialValues={educationDetail || initialValues}
         validationSchema={Yup.object({
           college: Yup.string().required("Required"),
           course: Yup.string().required("Required"),
@@ -41,6 +41,8 @@ function EducationEdit({ onClick }) {
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
           console.log(values);
+          setEducationDetail(values);
+          onClick();
         }}
       >
         <Form>

@@ -7,6 +7,9 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import EditButton from "@/components/EditButton";
 import * as Yup from "yup";
+import BasicDetailsEdit from "@/components/BasicDetailsEdit";
+import Image from "next/image";
+import check from "@/public/check.svg";
 
 const basicInitialValues = {
   name: "",
@@ -15,10 +18,15 @@ const basicInitialValues = {
 };
 
 function Register() {
+  const [basic, setBasic] = useState(false);
   const [certification, setCertification] = useState(false);
   const [experience, setExperience] = useState(false);
   const [education, setEducation] = useState(false);
-  const [basic, setBasic] = useState(false);
+
+  const [basicDetail, setBasicDetail] = useState(null);
+  const [certificationDetail, setCertificationDetail] = useState(null);
+  const [experienceDetail, setExperienceDetail] = useState(null);
+  const [educationDetail, setEducationDetail] = useState(null);
 
   return (
     <div className="bg-slate-300 w-full min-h-screen flex justify-center items-center relative">
@@ -38,7 +46,13 @@ function Register() {
               .min(5, "Min Length should be 5"),
           })}
           onSubmit={(values, { setSubmitting }) => {
-            console.log(values);
+            console.log(
+              values,
+              basicDetail,
+              certificationDetail,
+              educationDetail,
+              experienceDetail
+            );
             setSubmitting(false);
           }}
         >
@@ -47,15 +61,22 @@ function Register() {
             <Input name="email" label="Email" />
             <Input name="password" type="password" label="Password" />
 
-            <div className="flex flex-wrap">
-              <EditButton
-                type="button"
-                onClick={() => setCertification(true)}
-                icon
-              >
+            <div className="flex">
+              <EditButton type="button" onClick={() => setBasic(true)} icon>
                 Add Basic Details
               </EditButton>
-              {/* Certificaiton  */}
+              {basicDetail && (
+                <Image
+                  className="-ml-2"
+                  src={check}
+                  width={18}
+                  height={18}
+                  alt="check"
+                />
+              )}
+            </div>
+            {/* Certificaiton  */}
+            <div className="flex">
               <EditButton
                 type="button"
                 onClick={() => setCertification(true)}
@@ -63,8 +84,19 @@ function Register() {
               >
                 Add Certification
               </EditButton>
+              {certificationDetail && (
+                <Image
+                  className="-ml-2"
+                  src={check}
+                  width={18}
+                  height={18}
+                  alt="check"
+                />
+              )}
+            </div>
 
-              {/* Xp  */}
+            {/* Xp  */}
+            <div className="flex">
               <EditButton
                 type="button"
                 onClick={() => setExperience(true)}
@@ -73,10 +105,31 @@ function Register() {
                 Add Experience
               </EditButton>
 
-              {/* Eductaion  */}
+              {experienceDetail && (
+                <Image
+                  className="-ml-2"
+                  src={check}
+                  width={18}
+                  height={18}
+                  alt="check"
+                />
+              )}
+            </div>
+
+            {/* Eductaion  */}
+            <div className="flex">
               <EditButton type="button" onClick={() => setEducation(true)} icon>
                 Add Education
               </EditButton>
+              {educationDetail && (
+                <Image
+                  className="-ml-2"
+                  src={check}
+                  width={18}
+                  height={18}
+                  alt="check"
+                />
+              )}
             </div>
 
             <Button type="submit">Register</Button>
@@ -84,21 +137,42 @@ function Register() {
         </Formik>
       </div>
 
+      {basic && (
+        <div className="absolute z-10 top-0 left-0 w-screen h-screen bg-black/50">
+          <BasicDetailsEdit
+            basicDetail={basicDetail}
+            setBasicDetail={setBasicDetail}
+            onClick={() => setBasic(false)}
+          />
+        </div>
+      )}
       {certification && (
         <div className="absolute z-10 top-0 left-0 w-screen h-screen bg-black/50">
-          <CertificationsEdit onClick={() => setCertification(false)} />
+          <CertificationsEdit
+            certificationDetail={certificationDetail}
+            setCertificationDetail={setCertificationDetail}
+            onClick={() => setCertification(false)}
+          />
         </div>
       )}
 
       {experience && (
         <div className="absolute z-10 top-0 left-0 w-screen h-screen bg-black/50">
-          <ExperienceEdit onClick={() => setExperience(false)} />
+          <ExperienceEdit
+            experienceDetail={experienceDetail}
+            setExperienceDetail={setExperienceDetail}
+            onClick={() => setExperience(false)}
+          />
         </div>
       )}
 
       {education && (
         <div className="absolute z-10 top-0 left-0 w-screen h-screen bg-black/50">
-          <EducationEdit onClick={() => setEducation(false)} />
+          <EducationEdit
+            educationDetail={educationDetail}
+            setEducationDetail={setEducationDetail}
+            onClick={() => setEducation(false)}
+          />
         </div>
       )}
     </div>
