@@ -3,6 +3,8 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import React from "react";
 import Button from "@/components/Button";
+import { useRouter } from "next/router";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const initialValues = {
   email: "",
@@ -10,10 +12,13 @@ const initialValues = {
 };
 
 function Login() {
+  const router = useRouter();
+
   return (
     <div className="bg-slate-300 w-full min-h-screen flex justify-center items-center relative">
       <div className="max-w-xl w-full bg-white shadow-md rounded-xl px-8 py-8">
         <div className="font-medium text-2xl text-center uppercase ">Login</div>
+
         <Formik
           initialValues={initialValues}
           validationSchema={Yup.object({
@@ -25,6 +30,10 @@ function Login() {
           onSubmit={(values, { setSubmitting }) => {
             console.log(values);
             setSubmitting(false);
+            signIn("credentials", {
+              ...values,
+              redirect: "/dashboard",
+            });
           }}
         >
           <Form>
@@ -33,6 +42,9 @@ function Login() {
             <Button type="submit">Login</Button>
           </Form>
         </Formik>
+        <Button border onClick={() => router.push("/auth/register")}>
+          Register{" "}
+        </Button>
       </div>
     </div>
   );

@@ -1,9 +1,13 @@
 import React from "react";
 
-function Button({ children, onClick, ...props }) {
+function Button({ children, border = false, onClick, ...props }) {
   return (
     <button
-      className="bg-violet-800 text-white px-4 py-2 rounded-sm w-full hover:bg-violet-900"
+      className={`px-4 py-2 rounded-sm w-full my-2 ${
+        border
+          ? "bg-white text-violet-800 border border-violet-800 hover:bg-slate-200"
+          : "bg-violet-800 text-white hover:bg-violet-900 "
+      } `}
       onClick={onClick}
       {...props}
     >

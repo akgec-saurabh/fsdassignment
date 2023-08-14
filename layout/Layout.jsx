@@ -3,12 +3,14 @@ import Sidebar from "../components/Sidebar";
 import { Poppins } from "next/font/google";
 import MainHeader from "../components/MainHeader";
 import Register from "@/pages/auth/register";
+import { useSession } from "next-auth/react";
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
 });
 
 function Layout({ children }) {
+  const { data: session } = useSession();
   return (
     <div className={`${poppins.className} flex`}>
       <Sidebar />

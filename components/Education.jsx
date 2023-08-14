@@ -1,12 +1,13 @@
 import React from "react";
 import Button from "./Button";
+import EditButton from "./EditButton";
 
 function Education() {
   return (
     <div className="my-8">
       <div className="flex justify-between">
         <span className="font-medium">Education</span>
-        <Button>Edit</Button>
+        <EditButton>Edit</EditButton>
       </div>
       <div className="border border-slate-400 rounded-xl py-4 px-8 my-4 ">
         <div className="text-violet-900 font-medium">IIT HYDERABAD</div>

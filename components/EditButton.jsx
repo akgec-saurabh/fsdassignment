@@ -6,7 +6,7 @@ function EditButton({ children, icon = false, onClick, ...props }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center bg-slate-200 w-max pr-2 rounded-xl cursor-pointer my-2 mr-4"
+      className="flex    items-center bg-zinc-300 w-max  my-2  rounded-xl cursor-pointer px-4"
       {...props}
     >
       {icon && (

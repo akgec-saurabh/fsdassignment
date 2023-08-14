@@ -10,8 +10,11 @@ import Certifications from "@/components/Certifications";
 import Experience from "@/components/Experience";
 import Education from "@/components/Education";
 import ProfessionalDetails from "@/components/ProfessionalDetails";
+import EditButton from "@/components/EditButton";
+import axios from "axios";
 
-function Dashboard() {
+function Dashboard(props) {
+  console.log(props);
   return (
     <div className="h-full w-full pr-16">
       <div className="bg-violet-900 h-44 w-full rounded-xl mt-4 ">
@@ -26,7 +29,7 @@ function Dashboard() {
                 style={{ objectFit: "cover" }}
                 alt="profile"
               />
-              <Button>Upload Photo</Button>
+              <EditButton>Upload Photo</EditButton>
             </div>
             <div>
               <BasicDetail />
@@ -62,5 +65,27 @@ function Dashboard() {
     </div>
   );
 }
+
+// export async function getStaticProps() {
+//   let response;
+//   try {
+//     response = await axios.get(
+//       "http://localhost:5000/api/cert/64d909907edaf01af598b4b8"
+//     );
+//     // response = await fetch(
+//     //   "http://localhost:5000/api/cert/64d909907edaf01af598b4b8"
+//     // );
+//   } catch (error) {
+//     console.log(error);
+//   }
+
+//   const data = await response.data;
+
+//   console.log(data);
+
+//   return {
+//     props: { data: data },
+//   };
+// }
 
 export default Dashboard;

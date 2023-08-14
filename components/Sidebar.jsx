@@ -3,6 +3,8 @@ import Link from "next/link";
 import React from "react";
 import right from "../public/right.svg";
 import { useRouter } from "next/router";
+import Button from "./Button";
+import { signOut } from "next-auth/react";
 
 function Sidebar() {
   const router = useRouter();
@@ -55,6 +57,7 @@ function Sidebar() {
           </Link>
         </li>
       </ul>
+      <Button onClick={() => signOut()}>Logout</Button>
     </nav>
   );
 }

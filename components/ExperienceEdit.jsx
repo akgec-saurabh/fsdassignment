@@ -15,13 +15,18 @@ const initialValues = {
   to: "",
 };
 
-function ExperienceEdit({ onClick, setExperienceDetail, experienceDetail }) {
+function ExperienceEdit({
+  onClick,
+  setExperienceDetail,
+  experienceDetail,
+  onClose,
+}) {
   return (
     <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-xl bg-white  px-8 py-8 shadow-md  rounded-xl">
       <div className="flex justify-between">
         <div className="font-medium">Experience</div>
         <Image
-          onClick={onClick}
+          onClick={onClose}
           className="cursor-pointer"
           src={close}
           width={24}
@@ -42,7 +47,7 @@ function ExperienceEdit({ onClick, setExperienceDetail, experienceDetail }) {
           setSubmitting(false);
           console.log(values);
           setExperienceDetail(values);
-          onClick();
+          onClick(values);
         }}
       >
         <Form>

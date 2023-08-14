@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import BasicDetailsEdit from "@/components/BasicDetailsEdit";
 import Image from "next/image";
 import check from "@/public/check.svg";
+import { useRouter } from "next/router";
 
 const basicInitialValues = {
   name: "",
@@ -18,6 +19,7 @@ const basicInitialValues = {
 };
 
 function Register() {
+  const router = useRouter();
   const [basic, setBasic] = useState(false);
   const [certification, setCertification] = useState(false);
   const [experience, setExperience] = useState(false);
@@ -135,6 +137,9 @@ function Register() {
             <Button type="submit">Register</Button>
           </Form>
         </Formik>
+        <Button border onClick={() => router.push("/auth/login")}>
+          Login
+        </Button>
       </div>
 
       {basic && (

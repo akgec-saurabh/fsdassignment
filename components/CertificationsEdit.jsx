@@ -5,6 +5,7 @@ import Button from "./Button";
 import Image from "next/image";
 import close from "@/public/close.svg";
 import * as Yup from "yup";
+import axios from "axios";
 
 const initialValues = {
   course: "",
@@ -15,13 +16,15 @@ function CertificationsEdit({
   onClick,
   certificationDetail,
   setCertificationDetail,
+  onClose,
+  props,
 }) {
   return (
     <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-xl bg-white  px-8 py-8 shadow-md rounded-xl">
       <div className="flex justify-between">
         <div className="font-medium">Certifications</div>
         <Image
-          onClick={onClick}
+          onClick={onClose}
           className="cursor-pointer"
           src={close}
           width={24}
@@ -39,7 +42,8 @@ function CertificationsEdit({
           setSubmitting(false);
           console.log(values);
           setCertificationDetail(values);
-          onClick();
+          onClick(values);
+          onClose();
         }}
       >
         <Form>
