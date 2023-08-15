@@ -1,10 +1,19 @@
-import Login from "./auth/login";
-import Dashboard from "./dashboard";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Home() {
-  return (
-    <>
-      <Dashboard />
-    </>
-  );
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      console.log("Session Exist");
+      router.replace("/dashboard");
+    } else {
+      console.log("Session Does not Exist");
+      router.replace("/auth/login");
+    }
+  }, []);
+  return null;
 }

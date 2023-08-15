@@ -48,6 +48,7 @@ function ExperienceEdit({
           console.log(values);
           setExperienceDetail(values);
           onClick(values);
+          onClose();
         }}
       >
         <Form>

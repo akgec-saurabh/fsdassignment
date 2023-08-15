@@ -6,6 +6,7 @@ import Image from "next/image";
 import close from "@/public/close.svg";
 import Button from "./Button";
 import * as Yup from "yup";
+import { format } from "date-fns";
 
 const initialValues = {
   college: "",
@@ -15,13 +16,13 @@ const initialValues = {
   desc: "",
 };
 
-function EducationEdit({ onClick, educationDetail, setEducationDetail }) {
+function EducationEdit({ onSave, onClose, eduDetails, setEduDetails }) {
   return (
     <div className=" absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-xl bg-white  px-8 py-8 shadow-md rounded-xl">
       <div className="flex justify-between">
         <div className="font-medium">Education</div>
         <Image
-          onClick={onClick}
+          onClick={onClose}
           className="cursor-pointer"
           src={close}
           width={24}
@@ -29,8 +30,15 @@ function EducationEdit({ onClick, educationDetail, setEducationDetail }) {
           alt="close"
         />
       </div>
+
       <Formik
-        initialValues={educationDetail || initialValues}
+        initialValues={
+          {
+            ...eduDetails,
+            from: format(new Date(eduDetails.from), "yyyy-MM-dd"),
+            to: format(new Date(eduDetails.to), "yyyy-MM-dd"),
+          } || initialValues
+        }
         validationSchema={Yup.object({
           college: Yup.string().required("Required"),
           course: Yup.string().required("Required"),
@@ -41,8 +49,13 @@ function EducationEdit({ onClick, educationDetail, setEducationDetail }) {
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
           console.log(values);
-          setEducationDetail(values);
-          onClick();
+          setEduDetails({
+            ...values,
+            from: new Date(values.from),
+            to: new Date(values.to),
+          });
+          onSave(values);
+          onClose();
         }}
       >
         <Form>

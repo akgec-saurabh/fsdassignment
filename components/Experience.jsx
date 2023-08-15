@@ -6,20 +6,6 @@ import EditButton from "./EditButton";
 import ExperienceEdit from "./ExperienceEdit";
 import axios from "axios";
 
-const xpData = [
-  {
-    time: "7 Years(2014-2021)",
-    type: "Full-time",
-    company: "Oruphones",
-    position: "Full Stack Developer",
-  },
-  {
-    time: "6 months (2014)",
-    type: "Intern",
-    company: "Oruphones",
-    position: "Full Stack Developer",
-  },
-];
 const XpContainer = ({ time, type, company, position, from, to }) => {
   return (
     <div className="my-4 flex justify-between border border-slate-300 rounded-xl py-4 px-8">

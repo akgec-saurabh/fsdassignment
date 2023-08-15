@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import user from "../../public/user.png";
 import { Form, Formik } from "formik";
 import TextArea from "@/components/TextArea";
@@ -12,57 +12,56 @@ import Education from "@/components/Education";
 import ProfessionalDetails from "@/components/ProfessionalDetails";
 import EditButton from "@/components/EditButton";
 import axios from "axios";
+import BasicDetailsEdit from "@/components/BasicDetailsEdit";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 function Dashboard(props) {
   console.log(props);
-  return (
-    <div className="h-full w-full pr-16">
-      <div className="bg-violet-900 h-44 w-full rounded-xl mt-4 ">
-        <div className="text-white mx-4 py-2">MY PROFILE</div>
-        <div className="flex gap-44 mt-14 bg-white mx-11 px-8 py-8 rounded-xl">
-          <div className="flex-1">
-            <div className="flex justify-between items-center">
-              <Image
-                src={user}
-                width={88}
-                height={88}
-                style={{ objectFit: "cover" }}
-                alt="profile"
-              />
-              <EditButton>Upload Photo</EditButton>
-            </div>
-            <div>
-              <BasicDetail />
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
-              <Formik
-                initialValues={{
-                  about:
-                    "Lorem ipsum dolor sit amet consectetur. Erat auctor a aliquam vel congue luctus. Leo diam cras neque mauris ac arcu elit ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur. Erat auctor a aliquam vel congue luctus. Leo diam cras neque mauris ac arcu elit ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur. Erat auctor a aliquam vel congue luctus. Leo diam cras neque mauris ac arcu elit ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur. Erat auctor a aliquam vel congue luctus. Leo diam cras neque mauris ac arcu elit ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur. Erat auctor a aliquam vel congue luctus. Leo diam cras neque mauris ac arcu elit ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur. Erat auctor a aliquam vel congue luctus. Leo diam cras neque mauris ac arcu elit ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur. Erat auctor a aliquam vel congue luctus. Leo diam cras neque mauris ac arcu elit ipsum dolor sit amet consectetur.",
-                }}
-              >
-                <Form className="border border-slate-300 px-4 py-4 rounded-md my-6">
-                  <TextArea
-                    name="about"
-                    label={
-                      <span>
-                        About <span className="text-violet-900">Vishnu</span>
-                      </span>
-                    }
+  useEffect(() => {
+    if (!session) {
+      router.push("/auth/login");
+    }
+  }, []);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+  return (
+    <>
+      <div className="h-full w-full pr-16">
+        <div className="bg-violet-900 h-44 w-full rounded-xl mt-4 ">
+          <div className="text-white mx-4 py-2">MY PROFILE</div>
+          <div className="flex gap-44 mt-14 bg-white mx-11 px-8 py-8 rounded-xl">
+            <div className="flex-1">
+              <div className="flex justify-between items-center">
+                <div className="rounded-full w-[88px] h-[88px] bg-rose-300 overflow-hidden">
+                  <Image
+                    src={user}
+                    width={88}
+                    height={88}
+                    style={{ objectFit: "cover" }}
+                    alt="profile"
                   />
-                </Form>
-              </Formik>
-              <Skills />
+                </div>
+                <EditButton>Upload Photo</EditButton>
+              </div>
+              <BasicDetail />
             </div>
-          </div>
-          <div className="flex-1">
-            <ProfessionalDetails />
-            <Certifications />
-            <Experience />
-            <Education />
+            <div className="flex-1">
+              <ProfessionalDetails />
+              <Certifications />
+              <Experience />
+              <Education />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      {/* <BasicDetailsEdit /> */}
+    </>
   );
 }
 

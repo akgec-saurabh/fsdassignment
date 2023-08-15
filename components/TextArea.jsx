@@ -10,7 +10,7 @@ function TextArea({ label, ...props }) {
       </label>
       <textarea
         rows={5}
-        className={`text-area px-4  w-full resize-none overflow-hidden border  rounded-md border-slate-300
+        className={`text-area px-4 py-2  w-full resize-none overflow-hidden border  rounded-md border-slate-300
         bg-transparent`}
         {...field}
         {...props}

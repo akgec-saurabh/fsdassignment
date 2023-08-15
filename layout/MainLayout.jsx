@@ -9,10 +9,9 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 function MainLayout({ children }) {
-  const router = useRouter();
   const { data: session } = useSession();
 
-  if (router.pathname === "/dashboard" || router.pathname === "/my-connections")
+  if (session)
     return (
       <div className={`${poppins.className} flex`}>
         <Sidebar />
@@ -22,8 +21,9 @@ function MainLayout({ children }) {
         </div>
       </div>
     );
-
-  return <>{!session && children}</>;
+  else {
+    return <>{!session && children}</>;
+  }
 }
 
 export default MainLayout;

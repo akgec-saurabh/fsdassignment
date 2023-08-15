@@ -1,93 +1,136 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import Input from "./Input";
-import Button from "./Button";
-const initalValues = {
-  name: "Vishnu Swaroop",
-  email: "vishnu@oruphones.com",
-  phone: "+91 49652845732",
-};
+import EditButton from "./EditButton";
+import BasicDetailsEdit from "./BasicDetailsEdit";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 function BasicDetail() {
-  const [editModeName, setEditModeName] = useState(false);
-  const [editModeEmail, setEditModeEmail] = useState(false);
-  const [editModePhone, setEditModePhone] = useState(false);
+  const [basic, setBasic] = useState(false);
+  const [basicDetails, setBasicDetails] = useState(null);
+  const { data: session } = useSession();
+  console.log(session);
+
+  const saveHandler = async (values) => {
+    let response;
+    try {
+      response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/basic/64d909907edaf01af598b4b8`,
+        { ...values }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    const getBasic = async () => {
+      let response;
+      try {
+        response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/basic/64d909907edaf01af598b4b8`
+        );
+      } catch (error) {
+        console.log(error);
+      }
+
+      console.log(response?.data);
+      setBasicDetails(response?.data.basic);
+    };
+
+    getBasic();
+  }, []);
 
   return (
-    <div className="border border-slate-300 px-4 rounded-md my-6">
-      <Formik
-        initialValues={{ name: "Vishnu Swaroop" }}
-        validationSchema={Yup.object({
-          name: Yup.string()
-            .max(20, "Must be 20 character or less")
-            .required("Required"),
-        })}
-        onSubmit={(values, { setSubmitting }) => {
-          // onclick is running first so !editmode will be false for edit
+    <>
+      <div className="border border-slate-300 px-4 rounded-md my-6">
+        <div className="py-4 px-4 ">
+          <div className="text-slate-600">Your Name</div>
+          <div className="flex justify-between my-1 items-center ">
+            <div>{basicDetails?.name}</div>
+            <EditButton
+              onClick={() => {
+                setBasic(true);
+              }}
+            >
+              Edit
+            </EditButton>
+          </div>
+        </div>
+        <div className="py-4 px-4 ">
+          <div className="text-slate-600">Email</div>
+          <div className="flex justify-between my-1 items-center ">
+            <div>{session?.user.email}</div>
+            <EditButton
+              onClick={() => {
+                setBasic(true);
+              }}
+            >
+              Edit
+            </EditButton>
+          </div>
+        </div>
+        <div className="py-4 px-4 ">
+          <div className="text-slate-600">Phone Number</div>
+          <div className="flex justify-between my-1 items-center ">
+            <div>{basicDetails?.phone}</div>
+            <EditButton
+              onClick={() => {
+                setBasic(true);
+              }}
+            >
+              Edit
+            </EditButton>
+          </div>
+        </div>
+      </div>
+      <div className="border border-slate-300 px-4 rounded-md my-6">
+        <div className="px-4 py-4">
+          <div className="flex justify-between  items-center">
+            <div>
+              About <span>{basicDetails?.name}</span>
+            </div>
+            <EditButton
+              onClick={() => {
+                setBasic(true);
+              }}
+            >
+              Edit
+            </EditButton>
+          </div>
+          <div>{basicDetails?.about}</div>
+        </div>
+      </div>
 
-          // send req only when user save
-          if (!editModeName) {
-            setSubmitting(false);
-            console.log(values);
-          }
-        }}
-      >
-        <Form className="flex justify-between items-center">
-          <Input name="name" label="Your Name" editMode={editModeName} />
-          <Button type="submit" onClick={() => setEditModeName((prv) => !prv)}>
-            {!editModeName ? "Edit" : "Save"}
-          </Button>
-        </Form>
-      </Formik>
-      {/* EMAIL */}
-      <Formik
-        initialValues={{ email: "vishnu@oruphones.com" }}
-        validationSchema={Yup.object({
-          email: Yup.string()
-            .email("Invalid email Address")
-            .max(20, "Must be 20 character or less")
-            .required("Required"),
-        })}
-        onSubmit={(values, { setSubmitting }) => {
-          if (!editModeEmail) {
-            setSubmitting(false);
-            console.log(values);
-          }
-        }}
-      >
-        <Form className="flex justify-between items-center">
-          <Input name="email" label="Email" editMode={editModeEmail} />
-          <Button type="submit" onClick={() => setEditModeEmail((prv) => !prv)}>
-            {!editModeEmail ? "Edit" : "Save"}
-          </Button>
-        </Form>
-      </Formik>
-      {/* Phone */}
-      <Formik
-        initialValues={{ phone: "+91 49652845732" }}
-        validationSchema={Yup.object({
-          phone: Yup.string()
-            .max(14, "Must be 14 character or less")
-            .min(9, "Must be 9 character or above")
-            .required("Required"),
-        })}
-        onSubmit={(values, { setSubmitting }) => {
-          if (!editModePhone) {
-            setSubmitting(false);
-            console.log(values);
-          }
-        }}
-      >
-        <Form className="flex justify-between items-center">
-          <Input name="phone" label="Phone Number" editMode={editModePhone} />
-          <Button type="submit" onClick={() => setEditModePhone((prv) => !prv)}>
-            {!editModePhone ? "Edit" : "Save"}
-          </Button>
-        </Form>
-      </Formik>
-    </div>
+      <div className="border border-slate-300 px-4 rounded-md my-6">
+        <div className="px-4 py-4">
+          <div className="flex justify-between  items-center">
+            <div>Skills</div>
+            <EditButton
+              onClick={() => {
+                setBasic(true);
+              }}
+            >
+              Edit
+            </EditButton>
+          </div>
+          {basicDetails?.skills.split(",")?.map((skill) => (
+            <div key={skill} className="py-1">
+              {skill}
+            </div>
+          ))}
+        </div>
+      </div>
+      {basic && (
+        <BasicDetailsEdit
+          basicDetail={basicDetails}
+          setBasicDetail={setBasicDetails}
+          onClose={() => setBasic(false)}
+          onSave={(val) => saveHandler(val)}
+        />
+      )}
+    </>
   );
 }
 

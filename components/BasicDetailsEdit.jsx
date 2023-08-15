@@ -5,19 +5,22 @@ import Button from "./Button";
 import Image from "next/image";
 import close from "@/public/close.svg";
 import * as Yup from "yup";
+import TextArea from "./TextArea";
 
 const initialValues = {
   phone: "",
   skills: "",
+  name: "",
+  about: "",
 };
 
-function BasicDetailsEdit({ onClick, basicDetail, setBasicDetail }) {
+function BasicDetailsEdit({ onSave, onClose, basicDetail, setBasicDetail }) {
   return (
     <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-xl bg-white  px-8 py-8 shadow-md rounded-xl">
       <div className="flex justify-between">
         <div className="font-medium">Certifications</div>
         <Image
-          onClick={onClick}
+          onClick={onClose}
           className="cursor-pointer"
           src={close}
           width={24}
@@ -38,16 +41,20 @@ function BasicDetailsEdit({ onClick, basicDetail, setBasicDetail }) {
           setSubmitting(false);
           console.log(values);
           setBasicDetail(values);
-          onClick();
+          onSave(values);
+          onClose();
         }}
       >
         <Form>
+          <Input name="name" label="Your Name" placeholder="Vishnu Swaroop" />
+
           <Input name="phone" label="Your Phone" placeholder="9415793535" />
           <Input
             name="skills"
             label="Skills"
             placeholder="Java,Flutter,React"
           />
+          <TextArea name="about" label="About" placeholder="Your About" />
           <Button type="submit">Save</Button>
         </Form>
       </Formik>

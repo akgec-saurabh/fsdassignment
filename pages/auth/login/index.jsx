@@ -1,7 +1,7 @@
 import Input from "@/components/Input";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@/components/Button";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -13,6 +13,16 @@ const initialValues = {
 
 function Login() {
   const router = useRouter();
+  const { data: session, status } = useSession();
+  useEffect(() => {
+    if (session) {
+      router.push("/dashboard");
+    }
+  }, []);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-slate-300 w-full min-h-screen flex justify-center items-center relative">
@@ -32,7 +42,7 @@ function Login() {
             setSubmitting(false);
             signIn("credentials", {
               ...values,
-              redirect: "/dashboard",
+              redirect: false,
             });
           }}
         >
