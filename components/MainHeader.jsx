@@ -6,7 +6,7 @@ import Image from "next/image";
 
 function MainHeader() {
   return (
-    <div className="w-full flex justify-end py-4 border-b border-slate-200">
+    <div className="w-full  justify-end py-4 border-b border-slate-200 hidden sm:flex">
       <div className="flex gap-4 mr-4">
         <Image
           className="cursor-pointer"

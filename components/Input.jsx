@@ -1,7 +1,7 @@
 import React from "react";
 import { useField } from "formik";
 
-function Input({ label, editMode = true, ...props }) {
+function Input({ label, ...props }) {
   const [field, meta] = useField(props);
 
   return (
@@ -11,10 +11,8 @@ function Input({ label, editMode = true, ...props }) {
       </label>
       <div className="w-full flex justify-between">
         <input
-          disabled={!editMode}
-          className={`text-input px-4 py-2  border  rounded-md ${
-            editMode ? "border-slate-300" : "border-transparent"
-          } bg-transparent  w-full`}
+          className="text-input px-4 py-2 border  rounded-md 
+         border-slate-300 w-full bg-transparent"
           {...field}
           {...props}
         />

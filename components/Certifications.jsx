@@ -5,21 +5,22 @@ import Button from "./Button";
 import EditButton from "./EditButton";
 import CertificationsEdit from "./CertificationsEdit";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 function Certifications() {
-  console.log();
   const [certification, setCertification] = useState(false);
   const [certificationDetail, setCertificationDetail] = useState({
     course: "",
     company: "",
   });
 
+  const { data: session } = useSession();
+
   const certEditHandler = async (values) => {
-    console.log(values);
     let response;
     try {
       response = await axios.patch(
-        "http://localhost:5000/api/cert/64d909907edaf01af598b4b8",
+        `http://localhost:5000/api/cert/${session?.userId}`,
         {
           ...values,
         }
@@ -35,13 +36,12 @@ function Certifications() {
       let response;
       try {
         response = await axios.get(
-          "http://localhost:5000/api/cert/64d909907edaf01af598b4b8"
+          `http://localhost:5000/api/cert/${session?.userId}`
         );
       } catch (error) {
         console.log(error);
       }
 
-      console.log(response?.data);
       setCertificationDetail(response?.data.cert);
     };
 
@@ -52,7 +52,9 @@ function Certifications() {
       <div className="my-8">
         <div className="flex justify-between items-center">
           <span className="font-medium">Certifications</span>
-          <EditButton onClick={() => setCertification(true)}>Edit</EditButton>
+          <EditButton gray={true} onClick={() => setCertification(true)}>
+            Edit
+          </EditButton>
         </div>
         <div className="relative flex justify-center items-center border border-slate-300 rounded-full py-4 px-8 my-4">
           <Image
@@ -64,24 +66,28 @@ function Certifications() {
             alt="certy logo"
           />
           <div className=" ">
-            <div className="text-slate-500">{certificationDetail.course}</div>
+            <div className="text-slate-500">{certificationDetail?.course}</div>
             <div className="text-sm text-slate-500">
-              {certificationDetail.company}
+              {certificationDetail?.company}
             </div>
           </div>
         </div>
       </div>
       {certification && (
-        <div className="absolute z-10 top-0 left-0 w-screen h-screen bg-black/50">
+        <>
+          <div
+            onClick={() => setCertification(false)}
+            className="fixed top-0 left-0 w-screen h-screen bg-black/50"
+          ></div>
           <CertificationsEdit
             certificationDetail={certificationDetail}
             setCertificationDetail={setCertificationDetail}
-            onClick={(values) => certEditHandler(values)}
+            onSave={(values) => certEditHandler(values)}
             onClose={() => {
               setCertification(false);
             }}
           />
-        </div>
+        </>
       )}
     </>
   );

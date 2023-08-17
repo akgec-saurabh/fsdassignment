@@ -7,22 +7,14 @@ import Image from "next/image";
 import Button from "./Button";
 import * as Yup from "yup";
 
-const initialValues = {
-  position: "",
-  company: "",
-  type: "",
-  from: "",
-  to: "",
-};
-
 function ExperienceEdit({
-  onClick,
+  onSave,
   setExperienceDetail,
   experienceDetail,
   onClose,
 }) {
   return (
-    <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-xl bg-white  px-8 py-8 shadow-md  rounded-xl">
+    <div className="fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-xl bg-white  px-8 py-8 shadow-md  rounded-xl z-20">
       <div className="flex justify-between">
         <div className="font-medium">Experience</div>
         <Image
@@ -35,7 +27,8 @@ function ExperienceEdit({
         />
       </div>
       <Formik
-        initialValues={experienceDetail || initialValues}
+        enableReinitialize
+        initialValues={...experienceDetail}
         validationSchema={Yup.object({
           position: Yup.string().required("Required"),
           company: Yup.string().required("Required"),
@@ -45,9 +38,8 @@ function ExperienceEdit({
         })}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
-          console.log(values);
           setExperienceDetail(values);
-          onClick(values);
+          onSave(values);
           onClose();
         }}
       >
@@ -60,13 +52,13 @@ function ExperienceEdit({
           <Input name="company" label="Company" placeholder="Oruphones" />
           <Select name="type" label="Type">
             <option value="">Select a job type</option>
-            <option value="full_time">Full-time</option>
-            <option value="internship">Internship</option>
-            <option value="part_time">Part-time</option>
-            <option value="remote">Remote</option>
-            <option value="freelance">Freelance</option>
-            <option value="contract">Contract</option>
-            <option value="temporary">Temporary</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Internship">Internship</option>
+            <option value="Part Time">Part-time</option>
+            <option value="Remote">Remote</option>
+            <option value="Freelance">Freelance</option>
+            <option value="Contract">Contract</option>
+            <option value="Temporary">Temporary</option>
           </Select>
           <div className="">
             <span className="block text-slate-600 mt-4 -mb-2">Duration</span>

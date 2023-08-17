@@ -19,10 +19,26 @@ export const authOptions = {
         }
 
         // console.log(response);
-        return { ...response.data };
+        if (response) {
+          return { ...response.data };
+        }
+        return null;
       },
     }),
   ],
+
+  callbacks: {
+    async jwt({ token, user }) {
+      // the user present here gets the same data as received from DB call  made above -> fetchUserInfo(credentials.opt)
+
+      return { ...token, ...user };
+    },
+    async session({ session, user, token }) {
+      // user param present in the session(function) does not recive all the data from DB call -> fetchUserInfo(credentials.opt)
+
+      return token;
+    },
+  },
 };
 
 export default NextAuth(authOptions);

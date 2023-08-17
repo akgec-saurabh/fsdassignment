@@ -25,7 +25,7 @@ function Login() {
   }
 
   return (
-    <div className="bg-slate-300 w-full min-h-screen flex justify-center items-center relative">
+    <div className="bg-violet-500 w-full min-h-screen flex justify-center items-center relative">
       <div className="max-w-xl w-full bg-white shadow-md rounded-xl px-8 py-8">
         <div className="font-medium text-2xl text-center uppercase ">Login</div>
 
@@ -53,7 +53,7 @@ function Login() {
           </Form>
         </Formik>
         <Button border onClick={() => router.push("/auth/register")}>
-          Register{" "}
+          Register
         </Button>
       </div>
     </div>

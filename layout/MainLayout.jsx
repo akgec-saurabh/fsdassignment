@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar";
 import MainHeader from "../components/MainHeader";
 import React from "react";
 import { useSession } from "next-auth/react";
+import MobileNav from "@/components/MobileNav";
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
@@ -13,10 +14,11 @@ function MainLayout({ children }) {
 
   if (session)
     return (
-      <div className={`${poppins.className} flex`}>
+      <div className={`${poppins.className} flex `}>
         <Sidebar />
         <div className="w-screen min-h-screen">
           <MainHeader />
+          <MobileNav />
           <main className="min-h-screen bg-slate-100">{children}</main>
         </div>
       </div>

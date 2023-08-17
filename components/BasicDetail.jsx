@@ -9,15 +9,19 @@ import { useSession } from "next-auth/react";
 
 function BasicDetail() {
   const [basic, setBasic] = useState(false);
-  const [basicDetails, setBasicDetails] = useState(null);
+  const [basicDetails, setBasicDetails] = useState({
+    phone: "",
+    skills: "",
+    name: "",
+    about: "",
+  });
   const { data: session } = useSession();
-  console.log(session);
 
   const saveHandler = async (values) => {
     let response;
     try {
       response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/basic/64d909907edaf01af598b4b8`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/basic/${session?.userId}`,
         { ...values }
       );
     } catch (error) {
@@ -29,14 +33,13 @@ function BasicDetail() {
       let response;
       try {
         response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/basic/64d909907edaf01af598b4b8`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/basic/${session?.userId}`
         );
       } catch (error) {
         console.log(error);
       }
 
-      console.log(response?.data);
-      setBasicDetails(response?.data.basic);
+      setBasicDetails({ ...basicDetails, ...response?.data.basic });
     };
 
     getBasic();
@@ -50,6 +53,7 @@ function BasicDetail() {
           <div className="flex justify-between my-1 items-center ">
             <div>{basicDetails?.name}</div>
             <EditButton
+              gray={true}
               onClick={() => {
                 setBasic(true);
               }}
@@ -61,8 +65,9 @@ function BasicDetail() {
         <div className="py-4 px-4 ">
           <div className="text-slate-600">Email</div>
           <div className="flex justify-between my-1 items-center ">
-            <div>{session?.user.email}</div>
+            <div>{session?.email}</div>
             <EditButton
+              gray={true}
               onClick={() => {
                 setBasic(true);
               }}
@@ -76,6 +81,7 @@ function BasicDetail() {
           <div className="flex justify-between my-1 items-center ">
             <div>{basicDetails?.phone}</div>
             <EditButton
+              gray={true}
               onClick={() => {
                 setBasic(true);
               }}
@@ -92,6 +98,7 @@ function BasicDetail() {
               About <span>{basicDetails?.name}</span>
             </div>
             <EditButton
+              gray={true}
               onClick={() => {
                 setBasic(true);
               }}
@@ -108,6 +115,7 @@ function BasicDetail() {
           <div className="flex justify-between  items-center">
             <div>Skills</div>
             <EditButton
+              gray={true}
               onClick={() => {
                 setBasic(true);
               }}
@@ -115,7 +123,7 @@ function BasicDetail() {
               Edit
             </EditButton>
           </div>
-          {basicDetails?.skills.split(",")?.map((skill) => (
+          {basicDetails?.skills?.split(",")?.map((skill) => (
             <div key={skill} className="py-1">
               {skill}
             </div>
@@ -123,12 +131,19 @@ function BasicDetail() {
         </div>
       </div>
       {basic && (
-        <BasicDetailsEdit
-          basicDetail={basicDetails}
-          setBasicDetail={setBasicDetails}
-          onClose={() => setBasic(false)}
-          onSave={(val) => saveHandler(val)}
-        />
+        <>
+          <div
+            onClick={() => setBasic(false)}
+            className="fixed top-0 z-10 left-0 w-screen h-screen bg-black/50"
+          ></div>
+
+          <BasicDetailsEdit
+            basicDetail={basicDetails}
+            setBasicDetail={setBasicDetails}
+            onClose={() => setBasic(false)}
+            onSave={(val) => saveHandler(val)}
+          />
+        </>
       )}
     </>
   );

@@ -5,8 +5,9 @@ import Image from "next/image";
 import EditButton from "./EditButton";
 import ExperienceEdit from "./ExperienceEdit";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
-const XpContainer = ({ time, type, company, position, from, to }) => {
+const XpContainer = ({ type, company, position, from, to }) => {
   return (
     <div className="my-4 flex justify-between border border-slate-300 rounded-xl py-4 px-8">
       <div className="flex w-full flex-col">
@@ -36,19 +37,24 @@ const XpContainer = ({ time, type, company, position, from, to }) => {
 function Experience() {
   const [openXpEdit, setOpenXpEdit] = useState(false);
   const [experienceDetail, setExperienceDetail] = useState(null);
+  const { data: session } = useSession();
 
   const editSaveHandler = async (values) => {
+    console.log(values);
+
     let response;
     try {
-      response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/experience/64d909907edaf01af598b4b8`,
+      response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/experience/${session?.userId}`,
         { ...values }
       );
     } catch (error) {
       console.log(error);
     }
 
-    setExperienceDetail({ ...response?.data.experience });
+    console.log(response?.data);
+
+    setExperienceDetail({ ...response?.data.exp });
   };
 
   useEffect(() => {
@@ -57,7 +63,7 @@ function Experience() {
       let response;
       try {
         response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/experience/64d909907edaf01af598b4b8`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/experience/${session?.userId}`
         );
       } catch (error) {
         console.log(error);
@@ -76,7 +82,9 @@ function Experience() {
       <div className="my-8">
         <div className="flex justify-between items-center">
           <span className="font-medium">Experience</span>
-          <EditButton onClick={() => setOpenXpEdit(true)}>Edit</EditButton>
+          <EditButton gray={true} onClick={() => setOpenXpEdit(true)}>
+            Edit
+          </EditButton>
         </div>
         {/* {xpData.map((xp) => (
           <XpContainer {...xp} key={xp.time} />
@@ -85,14 +93,20 @@ function Experience() {
       </div>
 
       {openXpEdit && (
-        <ExperienceEdit
-          setExperienceDetail={setExperienceDetail}
-          experienceDetail={experienceDetail}
-          onClick={editSaveHandler}
-          onClose={() => {
-            setOpenXpEdit(false);
-          }}
-        />
+        <>
+          <div
+            onClick={() => setOpenXpEdit(false)}
+            className="fixed top-0 left-0 w-screen h-screen bg-black/50"
+          ></div>
+          <ExperienceEdit
+            setExperienceDetail={setExperienceDetail}
+            experienceDetail={experienceDetail}
+            onSave={(val) => editSaveHandler(val)}
+            onClose={() => {
+              setOpenXpEdit(false);
+            }}
+          />
+        </>
       )}
     </>
   );

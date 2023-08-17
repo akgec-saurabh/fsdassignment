@@ -7,20 +7,14 @@ import close from "@/public/close.svg";
 import * as Yup from "yup";
 import axios from "axios";
 
-const initialValues = {
-  course: "",
-  company: "",
-};
-
 function CertificationsEdit({
-  onClick,
+  onSave,
   certificationDetail,
   setCertificationDetail,
   onClose,
-  props,
 }) {
   return (
-    <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-xl bg-white  px-8 py-8 shadow-md rounded-xl">
+    <div className="fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-xl bg-white  px-8 py-8 shadow-md rounded-xl z-20">
       <div className="flex justify-between">
         <div className="font-medium">Certifications</div>
         <Image
@@ -33,16 +27,16 @@ function CertificationsEdit({
         />
       </div>
       <Formik
-        initialValues={certificationDetail || initialValues}
+        enableReinitialize
+        initialValues={...certificationDetail }
         validationSchema={Yup.object({
           course: Yup.string().required("Required"),
           company: Yup.string().required("Required"),
         })}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
-          console.log(values);
           setCertificationDetail(values);
-          onClick(values);
+          onSave(values);
           onClose();
         }}
       >

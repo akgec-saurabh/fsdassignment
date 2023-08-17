@@ -8,10 +8,9 @@ import { signOut } from "next-auth/react";
 
 function Sidebar() {
   const router = useRouter();
-  console.log(router);
 
   return (
-    <nav className="w-96 ">
+    <nav className="w-96 hidden sm:block ">
       <div className="mx-auto  mt-6 border border-slate-300 rounded-md w-max px-8 py-2 font-medium text-2xl">
         {router.pathname === "/dashboard" ? "Dashboard" : "My Connections"}
       </div>
